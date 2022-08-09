@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useAppDispatch } from "../hooks/hooks";
-import { IExpense } from "../redux/features/expenseSlice";
+import {
+  addExpenseToHistory,
+  calculateIncome,
+  calculateBalance,
+  IExpense,
+  calculateExpense,
+} from "../redux/features/expenseSlice";
 
 const TransactionForm = () => {
   const dispatch = useAppDispatch();
@@ -41,9 +47,21 @@ const TransactionForm = () => {
           placeholder="Enter Amount"
         />
       </Form.Group>
-      <Button onClick={() => {
-        if(typeof expense.amount === 'string' && isNan(parseFloat(expense.amount)))
-      }}>Add Transaction</Button>
+      <Button
+        onClick={() => {
+          if (
+            typeof expense.amount === "string" &&
+            !isNaN(parseFloat(expense.amount))
+          ) {
+            dispatch(addExpenseToHistory(expense));
+            dispatch(calculateBalance());
+            dispatch(calculateIncome());
+            dispatch(calculateExpense());
+          }
+        }}
+      >
+        Add Transaction
+      </Button>
     </div>
   );
 };
