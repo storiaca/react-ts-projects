@@ -7,9 +7,10 @@ const app: Application = express();
 app.use(express.json());
 
 // Routes
+import gameRoute from "./routes/gameRoute";
 
 // here we will declare the route paths
-app.get("/", (req: Request, res: Response) => {
-  res.send({ message: "It Works" });
-});
+
+app.use("/api/games", gameRoute);
+
 export { app };
