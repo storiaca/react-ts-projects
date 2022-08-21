@@ -6,12 +6,14 @@ interface GameState {
   games: Game[] | null;
   loading: boolean;
   singleGame: Game | null;
+  errors: any;
 }
 
 const initialState: GameState = {
   games: [],
   singleGame: null,
   loading: false,
+  errors: null,
 };
 
 // actions are processess that get data from backend
@@ -35,5 +37,18 @@ export const gameSlice = createSlice({
     setGames: (state, action: PayloadAction<Game[]>) => {
       state.games = action.payload;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(getGames.pending, (state) => {
+      state.loading = true;
+    });
+    builder.addCase(getGames.fulfilled, (state, action) => {
+      state.games = action.payload;
+      state.loading = false;
+    });
+    builder.addCase(getGames.rejected, (state, action) => {
+      state.loading = false;
+      state.errors = action.payload;
+    });
   },
 });
