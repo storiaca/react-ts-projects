@@ -16,8 +16,8 @@ const initialState: GameState = {
   errors: null,
 };
 
-// actions are processess that get data from backend
-export const getGames = createAsyncThunk<Game[], any>(
+// actions are processes that get data from backend
+export const getGames = createAsyncThunk<Game[]>(
   "games/getGames",
   async (_, thunkAPI) => {
     try {
@@ -34,9 +34,10 @@ export const createGame = createAsyncThunk<Object, Game>(
   async (data, thunkAPI) => {
     try {
       const response = await axios.post(
-        "hhtp://localhost:8080/api/games/game",
+        "http://localhost:8080/api/games/game",
         data
       );
+      thunkAPI.dispatch(getGames());
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -67,3 +68,6 @@ export const gameSlice = createSlice({
     });
   },
 });
+
+export default gameSlice.reducer;
+export const { setGames } = gameSlice.actions;
