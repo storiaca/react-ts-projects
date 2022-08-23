@@ -4,7 +4,9 @@ import "dotenv/config";
 
 const app: Application = express();
 
+// middlewares
 app.use(express.json());
+app.use(cors());
 
 // Routes
 import gameRoute from "./routes/gameRoute";
